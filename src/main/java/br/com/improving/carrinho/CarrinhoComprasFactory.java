@@ -1,6 +1,10 @@
 package br.com.improving.carrinho;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Classe responsável pela criação e recuperação dos carrinhos de compras.
@@ -10,8 +14,10 @@ import java.math.BigDecimal;
  * cliente. Isso é verdade para todos os métodos.
  */
 public class CarrinhoComprasFactory {
+	private final Map<String, CarrinhoCompras> carrinhoDeComprasPorUser;
 
 	public CarrinhoComprasFactory() {
+		this.carrinhoDeComprasPorUser = new HashMap<>();
 	}
 
     /**
@@ -23,7 +29,8 @@ public class CarrinhoComprasFactory {
      * @return CarrinhoCompras
      */
     public CarrinhoCompras criar(String identificacaoCliente) {
-
+		CarrinhoCompras novoCarrinho = new CarrinhoCompras();
+		return Optional.ofNullable(carrinhoDeComprasPorUser.putIfAbsent(identificacaoCliente, novoCarrinho)).orElseGet(() -> novoCarrinho);
     }
 
     /**
@@ -36,7 +43,12 @@ public class CarrinhoComprasFactory {
      * @return BigDecimal
      */
     public BigDecimal getValorTicketMedio() {
-
+		BigDecimal ticketMedio = BigDecimal.ZERO;
+		Collection<CarrinhoCompras> carrinhoPorUserCollection = carrinhoDeComprasPorUser.values();
+		for (CarrinhoCompras carrinho : carrinhoPorUserCollection) {
+			ticketMedio = ticketMedio.add(carrinho.getValorTotal());
+		}
+		return ticketMedio.divide(BigDecimal.valueOf(carrinhoPorUserCollection.size()));
     }
 
     /**
@@ -48,6 +60,6 @@ public class CarrinhoComprasFactory {
      * e false caso o cliente não possua um carrinho.
      */
     public boolean invalidar(String identificacaoCliente) {
-
+		return carrinhoDeComprasPorUser.remove(identificacaoCliente) != null;
     }
 }

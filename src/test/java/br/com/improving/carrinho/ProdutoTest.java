@@ -3,13 +3,11 @@ package br.com.improving.carrinho;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.sun.org.apache.xpath.internal.operations.String;
-
 import junit.framework.TestCase;
 
 public class ProdutoTest extends TestCase {
 	@Test
-	public void inequalityTest() {
+	public void testDesigualdade() {
 		Produto umProduto = new Produto(10L, "um produto");
 		Produto umProdutoDiferente = new Produto(15L, "diferente");
 		Produto umProdutoIgual = new Produto(10L, "igual");
@@ -20,12 +18,12 @@ public class ProdutoTest extends TestCase {
 	}
 
 	@Test//(expected = AlgumaExceptionDeParse) TODO
-	public void inequalityWhenDifferentObjectShouldThrowException() {
-		new Produto(10L, "").equals("Uma String");
+	public void testDesigualdadeEntreDiferentesFalham() {
+		Assert.assertFalse(new Produto(10L, "").equals("Uma String"));
 	}
 
 	@Test
-	public void equalityTest() {
+	public void testIgualdade() {
 		Produto umProduto = new Produto(10l, "um produto");
 		Produto umProdutoDiferente = new Produto(15l, "diferente");
 		Produto umProdutoIgual = new Produto(10l, "igual");
