@@ -15,6 +15,20 @@ public class CarrinhoComprasTest extends TestCase {
 		Assert.assertEquals(1, carrinhoCompras.getItens().size());
 	}
 
+	public void testAdicionarItemQueJaExiste() {
+		CarrinhoCompras carrinhoCompras = new CarrinhoCompras();
+		Produto produto1 = new Produto(1L, "produto1");
+		Produto produtoIgualAo1 = new Produto(1L, "produto igual ao 1");
+		carrinhoCompras.adicionarItem(produto1, BigDecimal.ONE, 1);
+		Assert.assertEquals(1, carrinhoCompras.getItens().size());
+		carrinhoCompras.adicionarItem(produto1, BigDecimal.ONE, 2);
+		Assert.assertEquals(1, carrinhoCompras.getItens().size());
+		Assert.assertEquals(3, carrinhoCompras.getItens().stream().mapToInt(Item::getQuantidade).reduce(Integer::sum).orElseGet(() -> 0));
+		carrinhoCompras.adicionarItem(produtoIgualAo1, BigDecimal.ONE, 2);
+		Assert.assertEquals(1, carrinhoCompras.getItens().size());
+		Assert.assertEquals(5, carrinhoCompras.getItens().stream().mapToInt(Item::getQuantidade).reduce(Integer::sum).orElseGet(() -> 0));
+	}
+
 	public void testRemoverItem() {
 		CarrinhoCompras carrinhoCompras = new CarrinhoCompras();
 		Produto produto1 = new Produto(1L, "produto1");
