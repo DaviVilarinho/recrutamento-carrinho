@@ -46,18 +46,18 @@ public class Produto {
 	/**
 	 * Retorna se um outro objeto e igual a este produto quando possuem mesmo codigo
 	 *
-	 * @param otherObject
+	 * @param outroObjeto
 	 * @return boolean
 	 */
 	@Override
-	public boolean equals(Object otherObject) {
-		if (this == otherObject) {
+	public boolean equals(Object outroObjeto) {
+		if (this == outroObjeto) {
 			return true;
 		}
-		if (otherObject == null || getClass() != otherObject.getClass()) {
+		if (outroObjeto == null || getClass() != outroObjeto.getClass()) {
 			return false;
 		}
-		final Produto otherProduct = (Produto) otherObject;
-		return this.codigo.equals(otherProduct.getCodigo());
+		final Produto outroProduto = (Produto) outroObjeto;
+		return this.codigo.equals(outroProduto.getCodigo());
 	}
 }
