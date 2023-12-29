@@ -1,5 +1,7 @@
 package br.com.improving.carrinho;
 
+import java.util.Objects;
+
 /**
  * Classe que representa um produto que pode ser adicionado
  * como item ao carrinho de compras.
@@ -19,6 +21,8 @@ public class Produto {
      * @param descricao
      */
     public Produto(Long codigo, String descricao) {
+		this.codigo = codigo;
+		this.descricao = descricao;
     }
 
     /**
@@ -27,6 +31,7 @@ public class Produto {
      * @return Long
      */
     public Long getCodigo() {
+		return this.codigo;
     }
 
     /**
@@ -35,5 +40,24 @@ public class Produto {
      * @return String
      */
     public String getDescricao() {
+		return this.descricao;
     }
+
+	/**
+	 * Retorna se um outro objeto é igual à este produto quando possuem mesmo código
+	 *
+	 * @param otherObject
+	 * @return boolean
+	 */
+	@Override
+	public boolean equals(Object otherObject) {
+		if (this == otherObject) {
+			return true;
+		}
+		if (otherObject == null || getClass() != otherObject.getClass()) {
+			return false;
+		}
+		final Produto otherProduct = (Produto) otherObject;
+		return this.codigo.equals(otherProduct.getCodigo());
+	}
 }
