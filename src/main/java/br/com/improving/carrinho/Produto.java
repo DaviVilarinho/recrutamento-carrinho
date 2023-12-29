@@ -60,4 +60,9 @@ public class Produto {
 		final Produto outroProduto = (Produto) outroObjeto;
 		return this.codigo.equals(outroProduto.getCodigo());
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo);
+	}
 }

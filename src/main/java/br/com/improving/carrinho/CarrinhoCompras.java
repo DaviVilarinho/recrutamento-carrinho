@@ -75,7 +75,9 @@ public class CarrinhoCompras {
      * caso o produto não exista no carrinho.
      */
     public boolean removerItem(Produto produto) {
-		return itens.remove(produto);
+		int tamanhoAntes = this.getItens().size();
+		this.itens = this.getItens().stream().filter(item -> !item.getProduto().equals(produto)).collect(Collectors.toList());
+		return tamanhoAntes > this.getItens().size();
     }
 
     /**

@@ -34,8 +34,9 @@ public class CarrinhoComprasTest extends TestCase {
 		Produto produto1 = new Produto(1L, "produto1");
 		carrinhoCompras.adicionarItem(produto1, BigDecimal.ONE, 1);
 		Assert.assertEquals(1, carrinhoCompras.getItens().size());
-		carrinhoCompras.removerItem(produto1);
+		Assert.assertTrue(carrinhoCompras.removerItem(produto1));
 		Assert.assertEquals(0, carrinhoCompras.getItens().size());
+		Assert.assertFalse(carrinhoCompras.removerItem(produto1));
 	}
 
 	public void testRemoverItemPos() {
