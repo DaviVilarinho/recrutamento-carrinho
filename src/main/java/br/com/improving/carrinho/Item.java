@@ -42,6 +42,10 @@ public class Item {
 		return this.valorUnitario;
     }
 
+	public void setValorUnitario(BigDecimal novoValorUnitario) {
+		this.valorUnitario = novoValorUnitario;
+	}
+
     /**
      * Retorna a quantidade dos item.
      *
@@ -50,6 +54,13 @@ public class Item {
     public int getQuantidade() {
 		return this.quantidade;
     }
+
+	/**
+	 * Dita a quantidade
+	 */
+	public void setQuantidade(int novaQuantidade) {
+		this.quantidade = novaQuantidade;
+	}
 
     /**
      * Retorna o valor total do item.

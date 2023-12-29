@@ -2,14 +2,36 @@ package br.com.improving.carrinho;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Classe que representa o carrinho de compras de um cliente.
  */
 public class CarrinhoCompras {
+	//private final HashMap<Produto, Item> itemProdutoMapa; // teria sido uma melhor alternativa, mas nao cumpre o requisito de remover iesimo item
+	private Collection<Item> itens;
 
-    /**
+	/**
+	 * Construtor sem argumentos da classe carrinho de compras
+ 	 */
+	public CarrinhoCompras() {
+		this.itens = new ArrayList<>();
+	}
+
+	/**
+	 * Construtor com argumento do proprio carrinho
+	 *
+	 * @param itens
+	 */
+	public CarrinhoCompras(Collection<Item> itens) {
+		this.itens = itens;
+	}
+
+	/**
      * Permite a adição de um novo item no carrinho de compras.
      *
      * Caso o item já exista no carrinho para este mesmo produto, as seguintes regras deverão ser seguidas:
@@ -23,8 +45,26 @@ public class CarrinhoCompras {
      * @param valorUnitario
      * @param quantidade
      */
-    public void adicionarItem(Produto produto, BigDecimal valorUnitario, int quantidade) {
-
+    public void adicionarItem(Produto produto, BigDecimal valorUnitario, int quantidade) throws RuntimeException {
+		if (quantidade <= 0) {
+			throw new RuntimeException("Não é possível instanciar quantidade negativa");
+			/* 	Eu evitaria colocar quaisquer throw. Este fiz porque é bem óbvio, existe um requisito de throw e parece inofensivo
+				dada natureza do método, no entanto	qualquer Exceção deveria ter conversas */
+		}
+		Item novoItem = new Item(produto, valorUnitario, quantidade);
+		final boolean[] didNotChange = {true}; // array porque nao se pode mudar estruturas sem ponteiro em java dentro do escopo de outra funcao
+		this.itens = this.itens.stream().map(item -> {
+			if (!item.getProduto().equals(novoItem.getProduto())) {
+				return item;
+			}
+			item.setQuantidade(item.getQuantidade() + quantidade);
+			item.setValorUnitario(valorUnitario);
+			didNotChange[0] = false;
+			return item;
+		}).collect(Collectors.toList());
+		if (didNotChange[0]) {
+			this.itens.add(novoItem);
+		}
     }
 
     /**
@@ -35,7 +75,7 @@ public class CarrinhoCompras {
      * caso o produto não exista no carrinho.
      */
     public boolean removerItem(Produto produto) {
-
+		return itens.remove(produto);
     }
 
     /**
@@ -48,7 +88,14 @@ public class CarrinhoCompras {
      * caso o produto não exista no carrinho.
      */
     public boolean removerItem(int posicaoItem) {
-
+		try {
+			ArrayList<Item> itensList = new ArrayList<>(itens);
+			itensList.remove(posicaoItem);
+			this.itens = itensList;
+			return true;
+		} catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+			return false;
+		}
     }
 
     /**
@@ -58,8 +105,12 @@ public class CarrinhoCompras {
      * @return BigDecimal
      */
     public BigDecimal getValorTotal() {
-
-    }
+		BigDecimal total = BigDecimal.ZERO;
+		for (Item item : itens) {
+			total = total.add(item.getValorTotal());
+		}
+		return total;
+	}
 
     /**
      * Retorna a lista de itens do carrinho de compras.
@@ -67,6 +118,6 @@ public class CarrinhoCompras {
      * @return itens
      */
     public Collection<Item> getItens() {
-
+		return itens;
     }
 }

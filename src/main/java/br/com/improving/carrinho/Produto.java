@@ -44,7 +44,7 @@ public class Produto {
     }
 
 	/**
-	 * Retorna se um outro objeto é igual à este produto quando possuem mesmo código
+	 * Retorna se um outro objeto e igual a este produto quando possuem mesmo codigo
 	 *
 	 * @param otherObject
 	 * @return boolean
